@@ -1,4 +1,5 @@
 class Pedido
+
   attr_accessor :id, :usuario, :periferico, :quantidade, :status
 
   def initialize(id, usuario, periferico, quantidade)
@@ -11,11 +12,21 @@ class Pedido
 
   def aprovar
     if @periferico.reduzir_estoque(@quantidade)
-      @status = "Aprovado"
-      puts "Pedido #{id} Aprovado com Sucesso"
+      puts "Pedido #{@id}: Quantidade disponível. Aprovar ou Reprovar? (Digite 'Aprovar' ou 'Reprovar')"
+      decisao = gets.chomp
+
+      if decisao == "Aprovar"
+        @status = "Aprovado"
+        puts "Pedido #{@id} Aprovado com Sucesso."
+      elsif decisao == "Reprovar"
+        @status = "Reprovado"
+        puts "Pedido #{@id} foi Reprovado."
+      else
+        puts "Opção inválida. O pedido #{@id} permanecerá pendente."
+      end
     else
-      @status = "Rejeitado"
-      puts "Pedido #{id} Rejeitado: Estoque insuficiente"
+      @status = "Reprovado"
+      puts "Pedido #{@id}: Quantidade insuficiente no estoque. Pedido Reprovado."
     end
   end
 end

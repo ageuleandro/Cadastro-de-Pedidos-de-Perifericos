@@ -82,6 +82,17 @@ class Sistema
     pedido.aprovar
   end
 
+  def exibir_menu
+    puts "\n========= MENU ========="
+    puts "1. Adicionar Usuário"
+    puts "2. Adicionar Periférico"
+    puts "3. Criar Pedido"
+    puts "4. Listar Pedidos"
+    puts "5. Aprovar/Rejeitar Pedido"
+    puts "6. Sair"
+    print "Escolha uma opção: "
+  end
+
   def executar
     loop do
       exibir_menu
@@ -104,17 +115,6 @@ class Sistema
         puts "Opção inválida. Tente novamente."
       end
     end
-  end
-
-  def exibir_menu
-    puts "\n========= MENU ========="
-    puts "1. Adicionar Usuário"
-    puts "2. Adicionar Periférico"
-    puts "3. Criar Pedido"
-    puts "4. Listar Pedidos"
-    puts "5. Aprovar/Rejeitar Pedido"
-    puts "6. Sair"
-    print "Escolha uma opção: "
   end
 end
 
