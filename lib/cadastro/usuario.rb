@@ -5,7 +5,5 @@ class Usuario
     @id = id
     @nome = nome
     @email = email
-
-
   end
 end

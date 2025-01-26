@@ -1,12 +1,12 @@
 class Pedido
   attr_accessor :id, :usuario, :periferico, :quantidade, :status
 
-  def initialize(id, usuario, periferico, quantidade, status)
+  def initialize(id, usuario, periferico, quantidade)
     @id = id
     @usuario = usuario
     @periferico = periferico
     @quantidade = quantidade
-    @status = status
+    @status = "Pendente"
   end
 
   def aprovar

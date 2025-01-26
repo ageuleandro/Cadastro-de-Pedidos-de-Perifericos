@@ -2,11 +2,20 @@
 require_relative '../lib/cadastro'
 
 puts "Bem-vindo ao sistema de cadastro de pedidos de periféricos!"
-usuario = Usuario.new(1, "João", "joao@example.com")
+puts "-------------------------------------------------------------------"
+# Criando objetos das outras classes
+usuario = Usuario.new(1, "Ageu", "leandro.junior7@gmail.com")
 puts "Usuário criado: Nome: #{usuario.nome}, Email: #{usuario.email}"
+puts "-------------------------------------------------------------------"
+periferico = Periferico.new(1, "Notebook", "Dell i7 16GB RAM SSD 240", 2)
+puts "Periferico criado: Nome: #{periferico.nome}, Descrição: #{periferico.descricao}, Estoque: #{periferico.quantidade_disponivel}"
+puts "-------------------------------------------------------------------"
 
-periferico = Periferico.new(1, "Monitor LG", "Monitor de Coputador", 100)
-puts "Periferico criado: Nome: #{periferico.nome}, Estoque: #{periferico.quantidade_disponivel}"
+
+# Testando a Classe Pedido
+pedido = Pedido.new(1, usuario, periferico, 5)
+puts "Pedido criado: Usuário: #{pedido.usuario.nome}, Periférico: #{pedido.periferico.nome}, Quantidade: #{pedido.quantidade}, Status: #{pedido.status}"
+puts "-------------------------------------------------------------------"
 
 # Reduzindo o estoque
 if periferico.reduzir_estoque(3)
@@ -14,12 +23,11 @@ if periferico.reduzir_estoque(3)
 else
   puts "Estoque insuficiente para reduzir"
 end
+puts "-------------------------------------------------------------------"
 
-# Testando a Classe Pedido
-pedido = Pedido.new(1, usuario, periferico, 5, "pendente")
-puts "Pedido criado: Usuário: #{pedido.usuario.nome}, Periférico: #{pedido.periferico.nome}, Quantidade: #{pedido.quantidade}, Status: #{pedido.status}"
+
 # Aprovando o Pedido
 pedido.aprovar
-puts "Status do pedido após aprovação: #{pedido.status}"
+puts "Status do pedido após análise: #{pedido.status}"
 
 
