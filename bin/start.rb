@@ -1,11 +1,15 @@
 #!/usr/bin/env ruby
 require_relative '../lib/cadastro'
+require 'json'
 
 class Sistema
   def initialize
     @usuarios = []
     @perifericos = []
     @pedidos = []
+    carregar_usuarios
+    carregar_perifericos
+    carregar_pedidos
   end
 
   def adicionar_usuario
@@ -16,6 +20,7 @@ class Sistema
     print "Email do usuário: "
     email = gets.chomp
     @usuarios << Usuario.new(id, nome, email)
+    salvar_usuarios #metodo JSON
     puts "Usuário '#{nome}' adicionado com sucesso!"
   end
 
@@ -29,6 +34,7 @@ class Sistema
     print "Quantidade disponível: "
     quantidade = gets.chomp.to_i
     @perifericos << Periferico.new(id, nome, descricao, quantidade)
+    salvar_perifericos #metodo JSON
     puts "Periférico '#{nome}' adicionado com sucesso!"
   end
 
@@ -54,6 +60,7 @@ class Sistema
     quantidade = gets.chomp.to_i
 
     @pedidos << Pedido.new(@pedidos.size + 1, usuario, periferico, quantidade)
+    salvar_pedidos #metodo JSON
     puts "Pedido criado com sucesso!"
   end
 
@@ -116,6 +123,69 @@ class Sistema
       end
     end
   end
+
+  def salvar_usuarios
+    File.open("usuarios.json", "w") do |file|
+      file.write(JSON.pretty_generate(@usuarios.map { |u| { id: u.id, nome: u.nome, email: u.email } }))
+    end
+  end
+
+  def carregar_usuarios
+    if File.exist?("usuarios.json")
+      @usuarios = JSON.parse(File.read("usuarios.json")).map do |dados|
+        Usuario.new(dados["id"], dados["nome"], dados["email"])
+      end
+    else
+      @usuarios = []
+    end
+  end
+
+  def salvar_perifericos
+    File.open("perifericos.json", "w") do |file|
+      file.write(JSON.pretty_generate(@perifericos.map { |p| { id: p.id, nome: p.nome, descricao: p.descricao, quantidade_disponivel: p.quantidade_disponivel } }))
+    end
+  end
+
+  def carregar_perifericos
+    if File.exist?("perifericos.json")
+      @perifericos = JSON.parse(File.read("perifericos.json")).map do |dados|
+        Periferico.new(dados["id"], dados["nome"], dados["descricao"], dados["quantidade_disponivel"])
+      end
+    else
+      @perifericos = []
+    end
+  end
+
+  def salvar_pedidos
+    File.open("pedidos.json", "w") do |file|
+      file.write(JSON.pretty_generate(@pedidos.map do |p|
+        {
+          id: p.id,
+          usuario_id: p.usuario.id,
+          periferico_id: p.periferico.id,
+          quantidade: p.quantidade,
+          status: p.status
+        }
+      end))
+    end
+  end
+
+  def carregar_pedidos
+    if File.exist?("pedidos.json")
+      @pedidos = JSON.parse(File.read("pedidos.json")).map do |dados|
+        usuario = @usuarios.find { |u| u.id == dados["usuario_id"] }
+        periferico = @perifericos.find { |p| p.id == dados["periferico_id"] }
+        Pedido.new(dados["id"], usuario, periferico, dados["quantidade"]).tap do |pedido|
+          pedido.status = dados["status"]
+        end
+      end
+    else
+      @pedidos = []
+    end
+  end
+
+
+
 end
 
 Sistema.new.executar

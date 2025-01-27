@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "usuario_id": 1,
+    "periferico_id": 1,
+    "quantidade": 10,
+    "status": "Pendente"
+  }
+]

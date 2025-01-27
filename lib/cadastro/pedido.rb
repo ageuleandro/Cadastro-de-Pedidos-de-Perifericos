@@ -1,4 +1,8 @@
 class Pedido
+  # id: Integer
+  # usuario: Objeto da classe Usuario
+  # periferico: Objeto da classe Periferico
+  # quantidade: Integer
 
   attr_accessor :id, :usuario, :periferico, :quantidade, :status
 
